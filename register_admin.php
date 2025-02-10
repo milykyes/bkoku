@@ -5,8 +5,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $full_name = $_POST['full_name'];
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
     $admin_key = $_POST['admin_key'];
     $valid_admin_key = 'admin123'; // Your predefined admin key
 
@@ -36,21 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Validate passwords match
-    if (!isset($error) && $password !== $confirm_password) {
-        $error = "Passwords do not match.";
-        $error_type = "password";
-    }
-
     // If no errors, proceed with registration
     if (!isset($error)) {
         try {
-            // Hash the password
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-            
-            // Insert admin into the database
-            $stmt = $pdo->prepare("INSERT INTO users (full_name, username, email, password, admin_key, status) VALUES (?, ?, ?, ?, ?, 'admin')");
-            $stmt->execute([$full_name, $username, $email, $hashed_password, $admin_key]);
+            // Insert admin into the database - removed password hashing since admin doesn't need password
+            $stmt = $pdo->prepare("INSERT INTO users (full_name, username, email, admin_key, status) VALUES (?, ?, ?, ?, 'admin')");
+            $stmt->execute([$full_name, $username, $email, $admin_key]);
             
             $registration_successful = true;
         } catch (PDOException $e) {

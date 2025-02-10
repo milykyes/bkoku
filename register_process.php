@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $admin_registration_key = $_POST['admin_key'];
                         $hashed_key = password_hash($admin_registration_key, PASSWORD_BCRYPT);
                         
-                        $stmt = $pdo->prepare("INSERT INTO users (full_name, username, email, password, admin_key, status) VALUES (?, ?, ?, ?, ?, 'admin')");
-                        $stmt->execute([$full_name, $username, $email, $hashed_password, $hashed_key]);
+                        $stmt = $pdo->prepare("INSERT INTO users (full_name, username, email, admin_key, status) VALUES (?, ?, ?, ?, 'admin')");
+                        $stmt->execute([$full_name, $username, $email, $hashed_key]);
                         $is_admin = true;
                     } else {
                         // Regular user registration
